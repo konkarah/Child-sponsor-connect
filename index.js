@@ -11,11 +11,12 @@ const helmet = require('helmet');
 const pool = mysql.createPool({
   host: process.env.hostname || 'localhost',
   user: process.env.username || 'root',
-  password: process.env.password || '32662272',
+  password: '#j4jt&C64Sk2$Ud' || '32662272',
   database: process.env.dbname || 'child_sponsor_connect1',
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
+  port: process.env.port || 3306,
 });
 
 const app = express();
@@ -308,4 +309,13 @@ const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Admin emails: ${ADMIN_EMAILS.join(', ')}`);
+  //show when db is connected
+  pool.getConnection()
+    .then(connection => {
+      console.log('Connected to the database');
+      connection.release();
+    })
+    .catch(err => {
+      console.error('Database connection error:', err);
+    });
 });
